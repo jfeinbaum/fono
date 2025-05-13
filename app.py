@@ -38,50 +38,43 @@ nodes = [
     {"id": "Z", "x": 700, "y": 175},
     {"id": "J", "x": 750, "y": 175},
 ]
-
 edges = [
-    {"nodeA": "Y", "nodeB": "I"},
-    {"nodeA": "I", "nodeB": "⋂"},
-    {"nodeA": "⋂", "nodeB": "Ǝ"},
-    {"nodeA": "Ǝ", "nodeB": "Ɐ"},
+    ("Y", "I"),
+    ("I", "⋂"),
+    ("⋂", "Ǝ"),
+    ("Ǝ", "Ɐ"),
 
-    {"nodeA": "A", "nodeB": "E"},
-    {"nodeA": "E", "nodeB": "⋂"},
-    {"nodeA": "⋂", "nodeB": "O"},
-    {"nodeA": "O", "nodeB": "U"},
+    ("A", "E"),
+    ("E", "⋂"),
+    ("⋂", "O"),
+    ("O", "U"),
 
-    {"nodeA": "L", "nodeB": "⋂"},
-    {"nodeA": "⋂", "nodeB": "R"},
-]
+    ("L", "⋂"),
+    ("⋂", "R"),
 
-edges += [
-    {"nodeA": "Ɐ", "nodeB": "M"},
+    ("Ɐ", "M"),
 
-    {"nodeA": "P", "nodeB": "T"},
-    {"nodeA": "T", "nodeB": "K"},
+    ("P", "T"),
+    ("T", "K"),
 
-    {"nodeA": "B", "nodeB": "M"},
-    {"nodeA": "D", "nodeB": "N"},
-    {"nodeA": "G", "nodeB": "Ŋ"},
+    ("B", "M"),
+    ("D", "N"),
+    ("G", "Ŋ"),
 
-    {"nodeA": "B", "nodeB": "D"},
-    {"nodeA": "D", "nodeB": "G"},
-    {"nodeA": "M", "nodeB": "N"},
-    {"nodeA": "N", "nodeB": "Ŋ"},
+    ("B", "D"),
+    ("D", "G"),
+    ("M", "N"),
+    ("N", "Ŋ"),
 
-    {"nodeA": "Ŋ", "nodeB": "V"},
-]
+    ("Ŋ", "V"),
 
-edges += [
-    {"nodeA": "F", "nodeB": "Φ"},
-    {"nodeA": "Φ", "nodeB": "S"},
-    {"nodeA": "S", "nodeB": "Ƨ"},
+    ("F", "Φ"),
+    ("Φ", "S"),
+    ("S", "Ƨ"),
 
-    {"nodeA": "V", "nodeB": "θ"},
-    {"nodeA": "θ", "nodeB": "Z"},
-    {"nodeA": "Z", "nodeB": "J"},
-
-
+    ("V", "θ"),
+    ("θ", "Z"),
+    ("Z", "J"),
 ]
 
 
