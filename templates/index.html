@@ -60,6 +60,11 @@
         </div>
     {% endfor %}
 
+    <div id="clicked-nodes"
+         style="position: fixed; top: 400px; left: 500px; background-color: white; padding: 20px;">
+    </div>
+
+
     <script>
         const nodePositions = {};
         document.querySelectorAll('.node').forEach(el => {
@@ -90,9 +95,30 @@
         });
 
         function handleClick(el) {
-            const id = el.getAttribute("data-id");
-            console.log("Clicked node:", id);
+            const nodeId = el.getAttribute("data-id");
+
+            fetch('/api/node_click', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ node_id: nodeId })
+            })
+            .then(response => response.json())  // Parse the JSON response from the server
+            .then(data => {
+                if (data.status === 'success') {
+                    const clickedNodesElement = document.getElementById('clicked-nodes');
+                    clickedNodesElement.textContent = data.clicked_nodes.join(' ');
+                    console.log(data.message);
+                } else {
+                    console.error('Failed to process node click');
+                }
+            })
+            .catch(error => {
+                console.error('Error during fetch:', error);
+            });
         }
+
     </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 
 app = Flask(__name__)
 
@@ -41,44 +41,59 @@ edges = [
     ("I", "⋂"),
     ("⋂", "Ǝ"),
     ("Ǝ", "Ɐ"),
-
     ("A", "E"),
     ("E", "⋂"),
     ("⋂", "O"),
     ("O", "U"),
-
     ("L", "⋂"),
     ("⋂", "R"),
-
     ("Ɐ", "M"),
-
     ("P", "T"),
     ("T", "K"),
-
     ("B", "M"),
     ("D", "N"),
     ("G", "Ŋ"),
-
     ("B", "D"),
     ("D", "G"),
     ("M", "N"),
     ("N", "Ŋ"),
-
     ("Ŋ", "V"),
-
     ("F", "Φ"),
     ("Φ", "S"),
     ("S", "Ƨ"),
-
     ("V", "θ"),
     ("θ", "Z"),
     ("Z", "J"),
 ]
 
+class NodeTracker:
+    def __init__(self):
+        self.clicked_nodes = []
 
+    def add_node(self, node_id):
+        self.clicked_nodes.append(node_id)
+
+    def get_clicked_nodes(self):
+        return self.clicked_nodes
+
+node_tracker = NodeTracker()
+
+@app.route('/api/node_click', methods=['POST'])
+def node_click():
+    data = request.json
+    node_id = data.get('node_id')
+
+    node_tracker.add_node(node_id)
+
+    return jsonify({
+        'message': f'Node {node_id} clicked!',
+        'clicked_nodes': node_tracker.get_clicked_nodes(),
+        'status': 'success'
+    })
 
 @app.route("/")
 def index():
+    node_tracker.__init__()
     return render_template("index.html", nodes=nodes, edges=edges)
 
 if __name__ == "__main__":
