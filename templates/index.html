@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phoneme Map</title>
+    <style>
+        body {
+            background-color: #bbb;
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        .node {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            color: black;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            border: 2px solid black;
+            cursor: pointer;
+        }
+
+        #title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: red;
+            text-shadow: 2px 2px gray;
+            margin-top: 20px;
+        }
+
+        #node-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        #edge-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="title">FONOGRAFIKS</div>
+
+    <div id="node-container">
+        <svg id="edge-layer"></svg>
+
+        {% for node in nodes %}
+            <div class="node"
+                 id="node-{{ node.id }}"
+                 style="left: {{ node.x }}px; top: {{ node.y }}px;"
+                 data-id="{{ node.id }}"
+                 onclick="handleClick(this)">
+                {{ node.id }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        const edges = {{ edges | tojson }};
+        window.onload = () => {
+            for (const edge of edges) {
+                drawEdge(edge.nodeA, edge.nodeB);
+            }
+        };
+
+        function handleClick(el) {
+            const id = el.getAttribute("data-id");
+            console.log("Clicked node:", id);
+        }
+
+        function drawEdge(fromId, toId) {
+            const nodeA = document.getElementById("node-" + fromId);
+            const nodeB = document.getElementById("node-" + toId);
+            const svg = document.getElementById("edge-layer");
+
+            const rectA = nodeA.getBoundingClientRect();
+            const rectB = nodeB.getBoundingClientRect();
+            const container = document.getElementById("node-container").getBoundingClientRect();
+
+            const x1 = rectA.left + rectA.width / 2 - container.left;
+            const y1 = rectA.top + rectA.height / 2 - container.top;
+            const x2 = rectB.left + rectB.width / 2 - container.left;
+            const y2 = rectB.top + rectB.height / 2 - container.top;
+
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", x1);
+            line.setAttribute("y1", y1);
+            line.setAttribute("x2", x2);
+            line.setAttribute("y2", y2);
+            line.setAttribute("stroke", "black");
+            line.setAttribute("stroke-width", "2");
+
+            svg.appendChild(line);
+        }
+    </script>
+</body>
+</html>
