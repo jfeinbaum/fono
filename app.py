@@ -66,6 +66,18 @@ edges = [
     ("Z", "J"),
 ]
 
+dot_map = {
+    "P": "Ṗ",
+    "T": "Ṫ",
+    "K": "K̇",
+    "B": "Ḃ",
+    "D": "Ḋ",
+    "G": "Ġ",
+    "M": "Ṁ",
+    "N": "Ṅ",
+    "Ŋ": "Ŋ̇"
+}
+
 class NodeTracker:
     def __init__(self):
         self.clicked_nodes = []
@@ -96,10 +108,11 @@ def node_dot_click():
     data = request.json
     node_id = data.get('node_id')
 
-    node_tracker.add_node(node_id + '-dot')
 
+    node_id_with_dot = dot_map[node_id]
+    node_tracker.add_node(node_id_with_dot)
     return jsonify({
-        'message': f'Node {node_id} dot clicked!',
+        'message': f'Node {node_id} dot ({node_id_with_dot}) clicked!',
         'clicked_nodes': node_tracker.get_clicked_nodes(),
         'status': 'success'
     })
