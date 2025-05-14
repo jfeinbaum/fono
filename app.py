@@ -5,35 +5,35 @@ app = Flask(__name__)
 
 
 nodes = [
-    {"id": "Y", "x": 300, "y": 100},
-    {"id": "I", "x": 350, "y": 135},
-    {"id": "⋂", "x": 400, "y": 175},
-    {"id": "Ǝ", "x": 450, "y": 215},
-    {"id": "Ɐ", "x": 500, "y": 250},
-    {"id": "A", "x": 500, "y": 100},
-    {"id": "E", "x": 450, "y": 135},
-    {"id": "O", "x": 350, "y": 215},
-    {"id": "U", "x": 300, "y": 250},
-    {"id": "L", "x": 400, "y": 100},
-    {"id": "R", "x": 400, "y": 250},
-    {"id": "P", "x": 600, "y": 100},
-    {"id": "T", "x": 650, "y": 100},
-    {"id": "K", "x": 700, "y": 100},
-    {"id": "B", "x": 600, "y": 175},
-    {"id": "D", "x": 650, "y": 175},
-    {"id": "G", "x": 700, "y": 175},
-    {"id": "M", "x": 600, "y": 250},
-    {"id": "N", "x": 650, "y": 250},
-    {"id": "Ŋ", "x": 700, "y": 250},
-    {"id": "H", "x": 875, "y": 40},
-    {"id": "F", "x": 800, "y": 100},
-    {"id": "Φ", "x": 850, "y": 100},
-    {"id": "S", "x": 900, "y": 100},
-    {"id": "Ƨ", "x": 950, "y": 100},
-    {"id": "V", "x": 800, "y": 175},
-    {"id": "θ", "x": 850, "y": 175},
-    {"id": "Z", "x": 900, "y": 175},
-    {"id": "J", "x": 950, "y": 175}
+    {"id": "Y", "x": 300, "y": 100, "dot": False},
+    {"id": "I", "x": 350, "y": 135, "dot": False},
+    {"id": "⋂", "x": 400, "y": 175, "dot": False},
+    {"id": "Ǝ", "x": 450, "y": 215, "dot": False},
+    {"id": "Ɐ", "x": 500, "y": 250, "dot": False},
+    {"id": "A", "x": 500, "y": 100, "dot": False},
+    {"id": "E", "x": 450, "y": 135, "dot": False},
+    {"id": "O", "x": 350, "y": 215, "dot": False},
+    {"id": "U", "x": 300, "y": 250, "dot": False},
+    {"id": "L", "x": 400, "y": 100, "dot": False},
+    {"id": "R", "x": 400, "y": 250, "dot": False},
+    {"id": "P", "x": 600, "y": 100, "dot": True},
+    {"id": "T", "x": 650, "y": 100, "dot": True},
+    {"id": "K", "x": 700, "y": 100, "dot": True},
+    {"id": "B", "x": 600, "y": 175, "dot": True},
+    {"id": "D", "x": 650, "y": 175, "dot": True},
+    {"id": "G", "x": 700, "y": 175, "dot": True},
+    {"id": "M", "x": 600, "y": 250, "dot": True},
+    {"id": "N", "x": 650, "y": 250, "dot": True},
+    {"id": "Ŋ", "x": 700, "y": 250, "dot": True},
+    {"id": "H", "x": 875, "y": 40, "dot": False},
+    {"id": "F", "x": 800, "y": 100, "dot": False},
+    {"id": "Φ", "x": 850, "y": 100, "dot": False},
+    {"id": "S", "x": 900, "y": 100, "dot": False},
+    {"id": "Ƨ", "x": 950, "y": 100, "dot": False},
+    {"id": "V", "x": 800, "y": 175, "dot": False},
+    {"id": "θ", "x": 850, "y": 175, "dot": False},
+    {"id": "Z", "x": 900, "y": 175, "dot": False},
+    {"id": "J", "x": 950, "y": 175, "dot": False}
 ]
 
 edges = [
@@ -87,6 +87,19 @@ def node_click():
 
     return jsonify({
         'message': f'Node {node_id} clicked!',
+        'clicked_nodes': node_tracker.get_clicked_nodes(),
+        'status': 'success'
+    })
+
+@app.route('/api/node_dot_click', methods=['POST'])
+def node_dot_click():
+    data = request.json
+    node_id = data.get('node_id')
+
+    node_tracker.add_node(node_id + '-dot')
+
+    return jsonify({
+        'message': f'Node {node_id} dot clicked!',
         'clicked_nodes': node_tracker.get_clicked_nodes(),
         'status': 'success'
     })

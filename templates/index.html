@@ -24,10 +24,25 @@
             cursor: pointer;
         }
 
-        .node:hover {
+        .node:hover:not(:has(.dot:hover)) {
             background-color: #ccc;
         }
 
+        .dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid black;
+            top: 2px;
+            right: 2px;
+            cursor: pointer;
+        }
+
+        .dot:hover {
+            background-color: #ccc;
+        }
 
         #title {
             text-align: center;
@@ -57,6 +72,9 @@
              data-id="{{ node.id }}"
              onclick="handleClick(this)">
             {{ node.id }}
+            {% if node.dot %}
+                <div class="dot" onclick="handleDotClick(event, '{{ node.id }}')"></div>
+            {% endif %}
         </div>
     {% endfor %}
 
@@ -104,7 +122,7 @@
                 },
                 body: JSON.stringify({ node_id: nodeId })
             })
-            .then(response => response.json())  // Parse the JSON response from the server
+            .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
                     const clickedNodesElement = document.getElementById('clicked-nodes');
@@ -117,6 +135,32 @@
             .catch(error => {
                 console.error('Error during fetch:', error);
             });
+        }
+
+        function handleDotClick(event, nodeId) {
+            event.stopPropagation();
+
+            fetch('/api/node_dot_click', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ node_id: nodeId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const clickedNodesElement = document.getElementById('clicked-nodes');
+                    clickedNodesElement.textContent = data.clicked_nodes.join(' ');
+                    console.log(data.message);
+                } else {
+                    console.error('Failed to process node dot click');
+                }
+            })
+            .catch(error => {
+                console.error('Error during fetch:', error);
+            });
+
         }
 
     </script>
