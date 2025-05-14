@@ -84,7 +84,6 @@
 
 
     <script>
-    // Pass data from Flask to JavaScript
     window.edgeData = {{ edges | tojson }};
     </script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
