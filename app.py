@@ -1,6 +1,15 @@
 from flask import Flask, render_template, jsonify, request
+from init_db import create_database, database_exists, query_rows, get_database_session
+
 
 app = Flask(__name__)
+
+db_name = 'database.db'
+if not database_exists(db_name):
+    create_database(db_name)
+
+session = get_database_session(db_name)
+query_rows(session)
 
 
 
