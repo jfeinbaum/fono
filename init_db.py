@@ -97,5 +97,5 @@ def get_database_session(name):
 
 def query_rows(session):
 
-    entries = session.query(Entry).limit(5).all()
+    entries = session.query(Entry).all()
     return entries
