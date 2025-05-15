@@ -14,8 +14,8 @@ class Entry(Base):
     answer = Column(String, nullable=False)
 
 def get_db_dict():
-    p = '/Users/Jake/Documents/fono stuff/  gendo dictation files/ 3-fonz/3-fonz answers.pdf'
-    files = '/Users/Jake/Documents/fono stuff/audio/3-fonz/'
+    p = 'static/3-fonz/3-fonz answers.pdf'
+    files = 'static/3-fonz/audio'
 
     reader = PdfReader(p)
 
