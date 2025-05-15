@@ -98,5 +98,4 @@ def get_database_session(name):
 def query_rows(session):
 
     entries = session.query(Entry).limit(5).all()
-    for entry in entries:
-        print(f'ID: {entry.id}, Path: {entry.filepath}, Answer: {entry.answer}')
+    return entries

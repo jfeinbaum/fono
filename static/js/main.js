@@ -28,6 +28,39 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
+let audioURL = null;
+let lastPath = null;
+
+function handleNewSoundBtn() {
+  const encodedLast = lastPath ? encodeURIComponent(lastPath) : '';
+
+  fetch(`/get-audio?last=${encodedLast}`)
+    .then(response => {
+      const newPath = response.headers.get('X-Audio-Path');
+      lastPath = newPath;
+
+      return response.blob();
+    })
+    .then(blob => {
+      if (audioURL) {
+        URL.revokeObjectURL(audioURL);
+      }
+      audioURL = URL.createObjectURL(blob);
+      new Audio(audioURL).play();
+    })
+    .catch(err => console.error('Error loading audio:', err));
+}
+
+function handlePlaySoundBtn() {
+  if (audioURL) {
+    const audio = new Audio(audioURL);
+    audio.play();
+  } else {
+    console.warn("No audio loaded yet.");
+  }
+}
+
 function handleClick(el) {
     const nodeId = el.getAttribute("data-id");
 
