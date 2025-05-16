@@ -1,17 +1,18 @@
-from flask import Flask, render_template, request, Response, jsonify
+from flask import Flask, render_template, request, Response, jsonify, session
 from init_db import create_database, database_exists, query_rows, get_database_session
 from model import initialize_phonemes, initialize_edges
 import random
 
 
 app = Flask(__name__)
+app.secret_key = 'test'
 
 db_name = 'database.db'
 if not database_exists(db_name):
     create_database(db_name)
 
-session = get_database_session(db_name)
-rows = query_rows(session)
+db_session = get_database_session(db_name)
+rows = query_rows(db_session)
 phonemes = initialize_phonemes()
 edges = initialize_edges()
 
@@ -24,7 +25,6 @@ def index():
 
 @app.route("/get-audio")
 def get_audio():
-    global current_answer
     last = request.args.get('last')
 
     while True:
@@ -33,8 +33,8 @@ def get_audio():
         if path != last:
             break
 
-    current_answer = choice.answer
-    print('answer set to:', current_answer)
+    session['answer'] = choice.answer
+    print('answer set to:', session.get('answer'))
 
     with open(path, 'rb') as f:
         data = f.read()
@@ -57,9 +57,10 @@ def validate():
                 id_seq += p.id
             elif p.ipa_dot == char:
                 id_seq += p.id_dot
-    print(f'guess: {id_seq} -- answer: {current_answer}')
+    answer = session.get('answer')
+    print(f'guess: {id_seq} -- answer: {answer}')
 
-    return jsonify({'correct': id_seq == current_answer})
+    return jsonify({'correct': id_seq == answer})
 
 if __name__ == "__main__":
     app.run(debug=True)
