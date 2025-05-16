@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 let audioURL = null;
 let lastPath = null;
+let clickedNodes = [];
 
 function handleNewSoundBtn() {
   const encodedLast = lastPath ? encodeURIComponent(lastPath) : '';
@@ -61,46 +62,19 @@ function handlePlaySoundBtn() {
   }
 }
 
-function handleClick(el) {
+function handleNodeClick(el) {
     const nodeId = el.getAttribute("data-id");
+    clickedNodes.push(nodeId);
+    document.getElementById('clicked-nodes').textContent = clickedNodes.join(' ');
+    console.log('Node', nodeId, 'clicked');
 
-    fetch('/api/node_click', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ node_id: nodeId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            document.getElementById('clicked-nodes').textContent = data.clicked_nodes.join(' ');
-            console.log(data.message);
-        } else {
-            console.error('Failed to process node click');
-        }
-    })
-    .catch(error => {
-        console.error('Error during fetch:', error);
-    });
+
 }
 
 function handleDotClick(event, nodeId) {
     event.stopPropagation();
-
-    fetch('/api/node_dot_click', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ node_id: nodeId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            document.getElementById('clicked-nodes').textContent = data.clicked_nodes.join(' ');
-            console.log(data.message);
-        } else {
-            console.error('Failed to process node dot click');
-        }
-    })
-    .catch(error => {
-        console.error('Error during fetch:', error);
-    });
+    clickedNodes.push(nodeId);
+    document.getElementById('clicked-nodes').textContent = clickedNodes.join(' ');
+    console.log('Node with dot', nodeId, 'clicked');
 }
+
