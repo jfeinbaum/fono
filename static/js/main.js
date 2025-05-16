@@ -62,6 +62,10 @@ function handlePlaySoundBtn() {
   }
 }
 
+function handleSubmitBtn() {
+    console.log('Submit Button clicked');
+}
+
 function handleNodeClick(el) {
     const nodeId = el.getAttribute("data-id");
     clickedNodes.push(nodeId);
@@ -77,4 +81,3 @@ function handleDotClick(event, nodeId) {
     document.getElementById('clicked-nodes').textContent = clickedNodes.join(' ');
     console.log('Node with dot', nodeId, 'clicked');
 }
-
