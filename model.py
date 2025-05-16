@@ -24,7 +24,7 @@ def initialize_phonemes():
         Phoneme(id='r', ipa='R', x=400, y=250),
         Phoneme(id='P', ipa='P', ipa_dot='Ṗ', x=600, y=100),
         Phoneme(id='t', ipa='T', ipa_dot='Ṫ', x=650, y=100),
-        Phoneme(id='k', ipa='K', ipa_dot='K', x=700, y=100),
+        Phoneme(id='k', ipa='K', ipa_dot='K̇̇', x=700, y=100),
         Phoneme(id='b', ipa='B', ipa_dot='Ḃ', x=600, y=175),
         Phoneme(id='d', ipa='D', ipa_dot='Ḋ', x=650, y=175),
         Phoneme(id='g', ipa='G', ipa_dot='Ġ̇̇̇', x=700, y=175),
