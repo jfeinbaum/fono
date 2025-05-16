@@ -122,6 +122,22 @@
             cursor: pointer;
         }
 
+        #response-message {
+            font-size: 16px;
+            font-family: sans-serif;
+            min-width: 80px;
+        }
+
+        .correct-response {
+            color: green;
+            font-weight: bold;
+        }
+
+        .incorrect-response {
+            color: red;
+            font-weight: bold;
+        }
+
 
     </style>
 </head>
@@ -145,6 +161,7 @@
     <div id="input-container">
         <div id="clicked-nodes"></div>
         <button id="submit-btn" onclick="handleSubmitBtn()" >Submit</button>
+        <div id="response-message"></div>
     </div>
 
     <div id="button-container">
