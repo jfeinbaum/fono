@@ -95,11 +95,11 @@
     {% for node in nodes %}
         <div class="node"
              style="left: {{ node.x }}px; top: {{ node.y }}px;"
-             data-id="{{ node.id }}"
-             onclick="handleClick(this)">
-            {{ node.id }}
-            {% if node.dot %}
-                <div class="dot" onclick="handleDotClick(event, '{{ node.id }}')"></div>
+             data-id="{{ node.ipa }}"
+             onclick="handleNodeClick(this)">
+            {{ node.ipa }}
+            {% if node.ipa_dot %}
+                <div class="dot" onclick="handleDotClick(event, '{{ node.ipa_dot }}')"></div>
             {% endif %}
         </div>
     {% endfor %}
