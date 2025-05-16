@@ -64,12 +64,24 @@ function handlePlaySoundBtn() {
 
 function handleSubmitBtn() {
     console.log('Submit Button clicked');
+    if (clickedNodes.length === 0) return;
+    fetch('/validate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sequence: clickedNodes })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Response:', data);
+    })
+    clickedNodes.length = 0;
+    updateClickedNodesDisplay();
 }
 
 function handleNodeClick(el) {
     const nodeId = el.getAttribute("data-id");
     clickedNodes.push(nodeId);
-    document.getElementById('clicked-nodes').textContent = clickedNodes.join(' ');
+    updateClickedNodesDisplay();
     console.log('Node', nodeId, 'clicked');
 
 
@@ -78,6 +90,10 @@ function handleNodeClick(el) {
 function handleDotClick(event, nodeId) {
     event.stopPropagation();
     clickedNodes.push(nodeId);
-    document.getElementById('clicked-nodes').textContent = clickedNodes.join(' ');
+    updateClickedNodesDisplay();
     console.log('Node with dot', nodeId, 'clicked');
+}
+
+function updateClickedNodesDisplay() {
+    document.getElementById('clicked-nodes').textContent = clickedNodes.join(' ');
 }
