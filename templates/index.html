@@ -65,7 +65,7 @@
             top: 400px;
             left: 400px;
             align-items: center;
-            padding: 10px;
+            padding: 20px;
             border: 1px solid #ccc;
             border-radius: 6px;
             max-width: 90vw;
@@ -95,13 +95,12 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 6px;
-            max-width: 90vw;
         }
 
         #clicked-nodes {
-            min-width: 100px;
+            min-width: 190px;
             max-width: 600px;
-            height: 30px; /* fixed height */
+            height: 30px;
             padding: 5px 10px;
             background-color: #f9f9f9;
             border: 1px solid #bbb;
@@ -165,8 +164,8 @@
     </div>
 
     <div id="button-container">
-      <button id="newSoundBtn" onclick="handleNewSoundBtn()">Get New Sound</button>
-      <button id="playBtn" onclick="handlePlaySoundBtn()">Play Last Sound</button>
+        <button id="playBtn" onclick="handlePlaySoundBtn()">Play Current Sound</button>
+        <button id="newSoundBtn" onclick="handleNewSoundBtn()">Get New Sound</button>
     </div>
 
     <script>
