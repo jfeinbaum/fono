@@ -35,6 +35,9 @@ let clickedNodes = [];
 
 function handleNewSoundBtn() {
   const encodedLast = lastPath ? encodeURIComponent(lastPath) : '';
+  clickedNodes.length = 0;
+  updateClickedNodesDisplay();
+  clearResponse();
 
   fetch(`/get-audio?last=${encodedLast}`)
     .then(response => {
@@ -63,7 +66,6 @@ function handlePlaySoundBtn() {
 }
 
 function handleSubmitBtn() {
-    console.log('Submit Button clicked');
     if (clickedNodes.length === 0) return;
     fetch('/validate', {
       method: 'POST',
@@ -72,18 +74,19 @@ function handleSubmitBtn() {
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Response:', data);
+        if (data.correct) {
+            displayCorrect();
+        } else {
+            displayIncorrect();
+        }
     })
-    clickedNodes.length = 0;
-    updateClickedNodesDisplay();
+
 }
 
 function handleNodeClick(el) {
     const nodeId = el.getAttribute("data-id");
     clickedNodes.push(nodeId);
     updateClickedNodesDisplay();
-    console.log('Node', nodeId, 'clicked');
-
 
 }
 
@@ -91,9 +94,28 @@ function handleDotClick(event, nodeId) {
     event.stopPropagation();
     clickedNodes.push(nodeId);
     updateClickedNodesDisplay();
-    console.log('Node with dot', nodeId, 'clicked');
 }
 
 function updateClickedNodesDisplay() {
     document.getElementById('clicked-nodes').textContent = clickedNodes.join(' ');
+}
+
+function displayCorrect() {
+    const responseDiv = document.getElementById('response-message');
+    responseDiv.textContent = 'Correct!';
+    responseDiv.className = 'correct-response';
+}
+
+function displayIncorrect() {
+    const responseDiv = document.getElementById('response-message');
+    responseDiv.textContent = 'Incorrect.';
+    responseDiv.className = 'incorrect-response';
+    clickedNodes.length = 0;
+    updateClickedNodesDisplay();
+}
+
+function clearResponse() {
+    const responseDiv = document.getElementById('response-message');
+    responseDiv.textContent = '';
+    responseDiv.className = '';
 }
