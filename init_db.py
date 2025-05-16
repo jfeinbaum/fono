@@ -14,8 +14,8 @@ class Entry(Base):
     answer = Column(String, nullable=False)
 
 def get_db_dict():
-    p = 'static/3-fonz/3-fonz answers.pdf'
-    files = 'static/3-fonz/audio'
+    p = 'static/2-fonz/2-fonz answers.pdf'
+    files = 'static/2-fonz/audio'
 
     reader = PdfReader(p)
 
@@ -28,19 +28,19 @@ def get_db_dict():
     groups = []
     current_group = None
     for item in l:
-        if item.startswith('Group'):
+        if item.startswith('Gp.'):
             current_group = []
             groups.append(current_group)
         elif current_group is not None:
             if ' ' not in item:
                 current_group.append(item)
 
-    groups = groups[:17]
+    groups = groups[:4]
 
 
     audio_dirs = []
     for afp in os.listdir(files):
-        if afp.startswith('3'):
+        if afp.startswith('2'):
             audio_dirs.append(afp)
 
     audio_files = []
@@ -48,7 +48,7 @@ def get_db_dict():
     for name in sorted(audio_dirs):
         afp = os.path.join(files, name)
         for fn in os.listdir(afp):
-            if fn.startswith('3'):
+            if fn.startswith('2'):
                 audio_files.append(os.path.join(afp, fn))
 
     audio_files = sorted(audio_files)
@@ -59,13 +59,16 @@ def get_db_dict():
     for i, group in enumerate(groups):
         group_no = i+1
         if group_no >= 10:
-            zero = ''
+            group_zero = ''
         else:
-            zero = '0'
+            group_zero = '0'
         for j, item in enumerate(group):
             item_no = j + 1
-
-            mp3_name = f'3-{zero}{group_no}-{item_no}.mp3'
+            if item_no >= 10:
+                item_zero = ''
+            else:
+                item_zero = '0'
+            mp3_name = f'2-{group_zero}{group_no}-{item_zero}{item_no}.mp3'
             mp3_file = audio_files[mp3_name]
 
             path_to_answer[mp3_file] = item
@@ -85,6 +88,7 @@ def create_database(name):
 
     session.commit()
 
+
 def database_exists(name):
     return os.path.exists(name)
 
@@ -99,3 +103,11 @@ def query_rows(session):
 
     entries = session.query(Entry).all()
     return entries
+
+if __name__ == '__main__':
+    with get_database_session('database.db') as session:
+        data = get_db_dict()
+        for path, ans in data.items():
+            session.add(Entry(filepath=path, answer=ans))
+
+        session.commit()
