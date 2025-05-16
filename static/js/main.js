@@ -62,6 +62,7 @@ function handlePlaySoundBtn() {
     audio.play();
   } else {
     console.warn("No audio loaded yet.");
+    handleNewSoundBtn();
   }
 }
 
