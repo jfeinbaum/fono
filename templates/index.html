@@ -66,7 +66,7 @@
             align-items: center;
             gap: 10px;
             position: fixed;
-            bottom: 150px;
+            bottom: 200px;
             width: 100%;
         }
 
@@ -74,16 +74,53 @@
           margin: 10px;
           padding: 12px 24px;
           font-size: 16px;
-          background-color: #007BFF;
-          color: white;
+          background-color: white;
+          color: black;
           border: none;
           border-radius: 6px;
           cursor: pointer;
         }
 
         button:hover {
-          background-color: #0056b3;
+          background-color: #ccc;
         }
+
+        #input-container {
+            position: absolute;
+            top: 320px;
+            left: 400px;
+            display: inline-flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            max-width: 90vw;
+        }
+
+        #clicked-nodes {
+            min-width: 100px;
+            max-width: 600px;
+            height: 30px; /* fixed height */
+            padding: 5px 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            white-space: nowrap;
+            overflow-x: auto;
+            overflow-y: hidden;
+            outline: none;
+            font-family: sans-serif;
+            font-size: 16px;
+            line-height: 20px;
+        }
+
+        #submit-btn {
+            margin-left: 10px;
+            padding: 5px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
 
     </style>
 </head>
@@ -104,14 +141,16 @@
         </div>
     {% endfor %}
 
-    <div id="clicked-nodes"
-         style="position: absolute; top: 320px; left: 400px; background-color: white; padding: 20px;">
+    <div id="input-container">
+        <div id="clicked-nodes"></div>
+        <button id="submit-btn" onclick="handleSubmitBtn()" >Submit</button>
     </div>
+
+
 
     <div id="buttonContainer" class="button-container">
       <button id="newSoundBtn" onclick="handleNewSoundBtn()">Get New Sound</button>
       <button id="playBtn" onclick="handlePlaySoundBtn()">Play Last Sound</button>
-        <button id="submitBtn" onclick="handleSubmitBtn()">Submit</button>
     </div>
 
 
