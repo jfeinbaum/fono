@@ -60,14 +60,15 @@
             z-index: -1;
         }
 
-        .button-container {
-            display: flex;
-            flex-direction: column;
+        #button-container {
+            position: absolute;
+            top: 400px;
+            left: 400px;
             align-items: center;
-            gap: 10px;
-            position: fixed;
-            bottom: 200px;
-            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            max-width: 90vw;
         }
 
         button {
@@ -146,14 +147,10 @@
         <button id="submit-btn" onclick="handleSubmitBtn()" >Submit</button>
     </div>
 
-
-
-    <div id="buttonContainer" class="button-container">
+    <div id="button-container">
       <button id="newSoundBtn" onclick="handleNewSoundBtn()">Get New Sound</button>
       <button id="playBtn" onclick="handlePlaySoundBtn()">Play Last Sound</button>
     </div>
-
-
 
     <script>
     window.edgeData = {{ edges | tojson }};
