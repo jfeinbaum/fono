@@ -48,8 +48,6 @@ def get_audio():
 def validate():
     data = request.get_json()
     seq = data['sequence']
-    print(f'IPA guess: {"".join(seq)}')
-
     id_seq = ''
     for char in seq:
         for p in phonemes:
@@ -63,4 +61,4 @@ def validate():
     return jsonify({'correct': id_seq == answer})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
