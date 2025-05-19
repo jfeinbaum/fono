@@ -99,6 +99,7 @@ function handleDotClick(event, nodeId) {
 
 function updateClickedNodesDisplay() {
     document.getElementById('clicked-nodes').textContent = clickedNodes.join(' ');
+    clearResponse();
 }
 
 function displayCorrect() {
@@ -111,12 +112,15 @@ function displayIncorrect() {
     const responseDiv = document.getElementById('response-message');
     responseDiv.textContent = 'Incorrect.';
     responseDiv.className = 'incorrect-response';
-    clickedNodes.length = 0;
-    updateClickedNodesDisplay();
 }
 
 function clearResponse() {
     const responseDiv = document.getElementById('response-message');
     responseDiv.textContent = '';
     responseDiv.className = '';
+}
+
+function handleBackBtn() {
+    clickedNodes.pop();
+    updateClickedNodesDisplay();
 }
