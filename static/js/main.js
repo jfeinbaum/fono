@@ -1,20 +1,43 @@
 document.addEventListener("DOMContentLoaded", () => {
     const nodePositions = {};
-    document.querySelectorAll('.node').forEach(el => {
-        const id = el.dataset.id;
+
+    document.querySelectorAll('.circle-node').forEach(el => {
+        const ipa = el.textContent.trim();
         const rect = el.getBoundingClientRect();
-        nodePositions[id] = {
-            x: rect.left + rect.width / 2 + window.scrollX,
-            y: rect.top + rect.height / 2 + window.scrollY
-        };
+        const centerX = rect.left + rect.width / 2 + window.scrollX;
+        const centerY = rect.top + rect.height / 2 + window.scrollY;
+        nodePositions[ipa] = { x: centerX, y: centerY };
+    });
+    
+    document.querySelectorAll('.dot-node').forEach(dot => {
+      const parentId = dot.dataset.parent;
+      const parentEl = document.getElementById(parentId);
+      if (!parentEl) return;
+
+      const rect = parentEl.getBoundingClientRect();
+      const scrollX = window.scrollX;
+      const scrollY = window.scrollY;
+
+      // Circle-node is 40x40, dot-node is 10x10
+      const dotOffsetX = 30 - 5; // 75% of 40 = 30, minus half dot width
+      const dotOffsetY = 10 - 5; // 25% of 40 = 10, minus half dot height
+
+      const x = rect.left + dotOffsetX + scrollX;
+      const y = rect.top + dotOffsetY + scrollY;
+
+      dot.style.left = `${x}px`;
+      dot.style.top = `${y}px`;
     });
 
-    const edges = window.edgeData || [];
-    const svg = document.getElementById('edges');
 
-    edges.forEach(([a, b]) => {
-        const nodeA = nodePositions[a];
-        const nodeB = nodePositions[b];
+    
+
+    const svg = document.getElementById('edges');
+    const edges = window.edgeData || [];
+
+    edges.forEach(([ipaA, ipaB]) => {
+        const nodeA = nodePositions[ipaA];
+        const nodeB = nodePositions[ipaB];
         if (!nodeA || !nodeB) return;
 
         const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -27,6 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
         svg.appendChild(line);
     });
 });
+
+
 
 
 let audioURL = null;
@@ -89,12 +114,6 @@ function handleNodeClick(el) {
     clickedNodes.push(nodeId);
     updateClickedNodesDisplay();
 
-}
-
-function handleDotClick(event, nodeId) {
-    event.stopPropagation();
-    clickedNodes.push(nodeId);
-    updateClickedNodesDisplay();
 }
 
 function updateClickedNodesDisplay() {

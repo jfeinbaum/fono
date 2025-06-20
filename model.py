@@ -1,13 +1,12 @@
 
 class Phoneme:
-    def __init__(self, id, ipa, ipa_dot=None, x=None, y=None):
+    def __init__(self, id, ipa, parent_id=None, x=None, y=None):
         self.id = id
         self.ipa = ipa
-        self.ipa_dot = ipa_dot
-        self.id_dot = self.id.upper() if self.ipa_dot else None
-        self.ipa_dot = ipa_dot
+        self.parent_id = parent_id
         self.x = x
         self.y = y
+
 
 def initialize_phonemes():
     return [
@@ -22,15 +21,24 @@ def initialize_phonemes():
         Phoneme(id='u', ipa='U', x=300, y=250),
         Phoneme(id='l', ipa='L', x=400, y=100),
         Phoneme(id='r', ipa='R', x=400, y=250),
-        Phoneme(id='p', ipa='P', ipa_dot='Ṗ', x=600, y=100),
-        Phoneme(id='t', ipa='T', ipa_dot='Ṫ', x=650, y=100),
-        Phoneme(id='k', ipa='K', ipa_dot='K̇̇', x=700, y=100),
-        Phoneme(id='b', ipa='B', ipa_dot='Ḃ', x=600, y=175),
-        Phoneme(id='d', ipa='D', ipa_dot='Ḋ', x=650, y=175),
-        Phoneme(id='g', ipa='G', ipa_dot='Ġ̇̇̇', x=700, y=175),
-        Phoneme(id='m', ipa='M', ipa_dot='Ṁ', x=600, y=250),
-        Phoneme(id='n', ipa='N', ipa_dot='Ṅ', x=650, y=250),
-        Phoneme(id='5', ipa='Ŋ', ipa_dot='Ŋ', x=700, y=250),
+        Phoneme(id='p', ipa='P', x=600, y=100),
+        Phoneme(id='P', ipa='Ṗ̇', parent_id='p'),
+        Phoneme(id='t', ipa='T', x=650, y=100),
+        Phoneme(id='T', ipa='Ṫ', parent_id='t'),
+        Phoneme(id='k', ipa='K', x=700, y=100),
+        Phoneme(id='K', ipa='K̇', parent_id='k'),
+        Phoneme(id='b', ipa='B', x=600, y=175),
+        Phoneme(id='B', ipa='Ḃ', parent_id='b'),
+        Phoneme(id='d', ipa='D', x=650, y=175),
+        Phoneme(id='D', ipa='Ḋ', parent_id='d'),
+        Phoneme(id='g', ipa='G', x=700, y=175),
+        Phoneme(id='G', ipa='Ġ', parent_id='g'),
+        Phoneme(id='m', ipa='M', x=600, y=250),
+        Phoneme(id='M', ipa='Ṁ', parent_id='m'),
+        Phoneme(id='n', ipa='N', x=650, y=250),
+        Phoneme(id='N', ipa='Ṅ', parent_id='n'),
+        Phoneme(id='5', ipa='Ŋ', x=700, y=250),
+        Phoneme(id='4', ipa='Ŋ̇', parent_id='5'),
         Phoneme(id='h', ipa='H', x=875, y=40),
         Phoneme(id='f', ipa='F', x=800, y=100),
         Phoneme(id='7', ipa='Φ', x=850, y=100),

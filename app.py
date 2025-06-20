@@ -53,8 +53,6 @@ def validate():
         for p in phonemes:
             if p.ipa == char:
                 id_seq += p.id
-            elif p.ipa_dot == char:
-                id_seq += p.id_dot
     answer = session.get('answer')
     print(f'guess: {id_seq} -- answer: {answer}')
 
