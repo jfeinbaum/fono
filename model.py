@@ -37,7 +37,7 @@ def initialize_phonemes():
         Phoneme(id='M', ipa='Ṁ', parent_id='m'),
         Phoneme(id='n', ipa='N', x=650, y=250),
         Phoneme(id='N', ipa='Ṅ', parent_id='n'),
-        Phoneme(id='5', ipa='Ŋ', x=700, y=250),
+        Phoneme(id='%', ipa='Ŋ', x=700, y=250),
         Phoneme(id='4', ipa='Ŋ̇', parent_id='5'),
         Phoneme(id='h', ipa='H', x=875, y=40),
         Phoneme(id='f', ipa='F', x=800, y=100),
