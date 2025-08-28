@@ -110,7 +110,7 @@ function handleSubmitBtn() {
 }
 
 function handleNodeClick(el) {
-    const nodeId = el.getAttribute("data-id");
+    const nodeId = el.getAttribute("ipa");
     clickedNodes.push(nodeId);
     updateClickedNodesDisplay();
 

@@ -155,7 +155,7 @@
         {% if not node.parent_id %}
             <div class="circle-node"
                  id="{{ node.id }}"
-                 data-id="{{ node.ipa }}"
+                 ipa="{{ node.ipa }}"
                  style="left: {{ node.x }}px; top: {{ node.y }}px;"
                  onclick="handleNodeClick(this)">
                 {{ node.ipa }}
@@ -163,7 +163,7 @@
         {% else %}
             <div class="dot-node"
                  id="{{ node.id }}"
-                 data-id="{{ node.ipa }}"
+                 ipa="{{ node.ipa }}"
                  data-parent="{{ node.parent_id }}"
                  onclick="handleNodeClick(this)">
             </div>
