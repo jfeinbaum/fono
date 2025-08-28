@@ -4,6 +4,7 @@ import os
 
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
+from db import Audio, Fon, AudioFon
 
 Base = declarative_base()
 
@@ -99,10 +100,22 @@ def get_database_session(name):
     session = Session()
     return session
 
+def create_guess_table(session):
+    class Guess(Base):
+        __tablename__ = 'guesses'
+        id = Column(Integer, primary_key=True)
+        entry_id = Column(Integer, nullable=False)
+        guess = Column(String, nullable=False)
+
+    Base.metadata.create_all(session.bind)
+    return Guess
+
+
+
 def query_rows(session):
 
-    entries = session.query(Entry).all()
-    return entries
+    audios = session.query(Audio).all()
+    return audios
 
 if __name__ == '__main__':
     with get_database_session('database.db') as session:
