@@ -109,6 +109,26 @@ function handleSubmitBtn() {
 
 }
 
+document.addEventListener("keydown", (event) => {
+      if (event.key === "Backspace") {
+        handleBackBtn();
+        return;
+    }
+
+      if (event.key === "Enter") {
+        handleSubmitBtn();
+        return;
+    }
+
+
+    const char = event.key; // the typed key (e.g. "a", "b", etc.)
+    const node = document.getElementById(char); // look for <div id="a">
+
+    if (node) {
+        handleNodeClick(node);
+    }
+});
+
 function handleNodeClick(el) {
     const nodeId = el.getAttribute("ipa");
     clickedNodes.push(nodeId);
