@@ -16,3 +16,7 @@ dist/
 
 # IDE settings
 *.idea/
+
+# Other
+.DS_Store
+static/.DS_Store
