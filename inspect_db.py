@@ -33,11 +33,11 @@ for table in tables:
         print(f"Error querying table {table}: {e}")
 
 
-    # try:
-    #     with engine.connect() as conn:
-    #         rows = conn.execute(text(f"SELECT * FROM fon")).fetchall()
-    #     for row in rows:
-    #         print(row)
-    # except Exception as e:
-    #     print(f"Error querying table {table}: {e}")
+try:
+    with engine.connect() as conn:
+        rows = conn.execute(text(f"SELECT * FROM fon")).fetchall()
+    for row in rows:
+        print(row)
+except Exception as e:
+    print(f"Error querying table {table}: {e}")
 

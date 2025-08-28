@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, Response, jsonify, session
 from init_db import create_database, database_exists, query_rows, get_database_session
 from model import initialize_fonz, initialize_edges
+from db import record_guess
 import random
 
 
@@ -57,6 +58,7 @@ def validate():
     print(f'guess: {id_seq} -- answer: {answer}')
 
     correct = id_seq == answer
+    record_guess(db_session, id_seq, correct)
 
     return jsonify({'correct': correct})
 
