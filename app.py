@@ -1,19 +1,19 @@
 from flask import Flask, render_template, request, Response, jsonify, session
 from init_db import create_database, database_exists, query_rows, get_database_session
-from model import initialize_phonemes, initialize_edges
+from model import initialize_fonz, initialize_edges
 import random
 
 
 app = Flask(__name__)
 app.secret_key = 'test'
 
-db_name = 'database.db'
+db_name = 'new_database.db'
 if not database_exists(db_name):
     create_database(db_name)
 
 db_session = get_database_session(db_name)
 rows = query_rows(db_session)
-phonemes = initialize_phonemes()
+fonz = initialize_fonz()
 edges = initialize_edges()
 
 current_answer = None
@@ -21,7 +21,7 @@ current_answer = None
 
 @app.route("/")
 def index():
-    return render_template("index.html", nodes=phonemes, edges=edges)
+    return render_template("index.html", nodes=fonz, edges=edges)
 
 @app.route("/get-audio")
 def get_audio():
@@ -33,7 +33,7 @@ def get_audio():
         if path != last:
             break
 
-    session['answer'] = choice.answer
+    session['answer'] = choice.sequence
     print('answer set to:', session.get('answer'))
 
     with open(path, 'rb') as f:
@@ -50,13 +50,15 @@ def validate():
     seq = data['sequence']
     id_seq = ''
     for char in seq:
-        for p in phonemes:
+        for p in fonz:
             if p.ipa == char:
                 id_seq += p.id
     answer = session.get('answer')
     print(f'guess: {id_seq} -- answer: {answer}')
 
-    return jsonify({'correct': id_seq == answer})
+    correct = id_seq == answer
+
+    return jsonify({'correct': correct})
 
 if __name__ == "__main__":
     app.run(debug=False, port=8080)
