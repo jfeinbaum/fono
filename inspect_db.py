@@ -13,8 +13,6 @@ session = Session()
 inspector = inspect(engine)
 tables = inspector.get_table_names()
 
-tables = ['fon']
-
 print("=== Database Tables ===")
 for table in tables:
     print(f"\n--- {table} ---")
