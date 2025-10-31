@@ -1,8 +1,8 @@
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import sessionmaker
-from db import *  # replace with your actual models module
+from temp_db import *  # replace with your actual models module
 
-DB_PATH = "sqlite:///new_database.db"  # adjust path if needed
+DB_PATH = "sqlite:///database.db"  # adjust path if needed
 
 # Set up engine and session
 engine = create_engine(DB_PATH, echo=False)
@@ -26,20 +26,14 @@ for table in tables:
     # Query a sample of rows
     try:
         with engine.connect() as conn:
-            rows = conn.execute(text(f"SELECT * FROM {table} LIMIT 5")).fetchall()
+            rows = conn.execute(text(f"SELECT * FROM {table}")).fetchall()
         for row in rows:
             print(row)
+
     except Exception as e:
         print(f"Error querying table {table}: {e}")
 
 
-try:
-    with engine.connect() as conn:
-        rows = conn.execute(text(f"SELECT * FROM fon")).fetchall()
-    for row in rows:
-        print(row)
-except Exception as e:
-    print(f"Error querying table {table}: {e}")
 
 '''
 change hamu5 to ham=5

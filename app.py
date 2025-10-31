@@ -1,14 +1,14 @@
 from flask import Flask, render_template, request, Response, jsonify, session
 from init_db import create_database, database_exists, query_rows, get_database_session
 from model import initialize_fonz, initialize_edges
-from db import record_guess
+from temp_db import record_guess
 import random
 
 
 app = Flask(__name__)
 app.secret_key = 'test'
 
-db_name = 'new_database.db'
+db_name = 'database.db'
 if not database_exists(db_name):
     create_database(db_name)
 

@@ -2,21 +2,44 @@
 from pypdf import PdfReader
 import os
 
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.orm import declarative_base, sessionmaker
-from db import Audio, Fon, AudioFon
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
+from model import initialize_fonz, initialize_edges, cached_audios
 
 Base = declarative_base()
 
-class Entry(Base):
-    __tablename__ = 'entries'
+class Audio(Base):
+    __tablename__ = 'audio'
     id = Column(Integer, primary_key=True)
     filepath = Column(String, nullable=False)
-    answer = Column(String, nullable=False)
+    sequence = Column(String, nullable=False)
+
+    fonz = relationship("AudioFon", back_populates="audio")
+
+class Fon(Base):
+    __tablename__ = 'fon'
+    id = Column(String, primary_key=True)
+    symbol = Column(String, unique=True, nullable=False)
+    correct_guesses = Column(Integer, default=0)
+    total_guesses = Column(Integer, default=0)
+
+    audios = relationship("AudioFon", back_populates="fon")
+
+class AudioFon(Base):
+    __tablename__ = 'audio_fon'
+    id = Column(Integer, primary_key=True)
+    audio_id = Column(Integer, ForeignKey('audio.id'))
+    fon_id = Column(Integer, ForeignKey('fon.id'))
+    position = Column(Integer)
+
+    audio = relationship("Audio", back_populates="fonz")
+    fon = relationship("Fon", back_populates="audios")
+
+
 
 def get_db_dict():
-    p = 'static/2-fonz/2-fonz answers.pdf'
-    files = 'static/2-fonz/audio'
+    p = 'static/5-fonz/5-fonz answers.pdf'
+    files = 'static/5-fonz/audio'
 
     reader = PdfReader(p)
 
@@ -29,19 +52,19 @@ def get_db_dict():
     groups = []
     current_group = None
     for item in l:
-        if item.startswith('Gp.'):
+        if item.startswith('Group'):
             current_group = []
             groups.append(current_group)
         elif current_group is not None:
             if ' ' not in item:
                 current_group.append(item)
 
-    groups = groups[:4]
+    groups = groups[:20]
 
 
     audio_dirs = []
     for afp in os.listdir(files):
-        if afp.startswith('2'):
+        if afp.startswith('5'):
             audio_dirs.append(afp)
 
     audio_files = []
@@ -49,7 +72,7 @@ def get_db_dict():
     for name in sorted(audio_dirs):
         afp = os.path.join(files, name)
         for fn in os.listdir(afp):
-            if fn.startswith('2'):
+            if fn.startswith('5'):
                 audio_files.append(os.path.join(afp, fn))
 
     audio_files = sorted(audio_files)
@@ -69,7 +92,7 @@ def get_db_dict():
                 item_zero = ''
             else:
                 item_zero = '0'
-            mp3_name = f'2-{group_zero}{group_no}-{item_zero}{item_no}.mp3'
+            mp3_name = f'5-{group_zero}{group_no}-{item_zero}{item_no}.mp3'
             mp3_file = audio_files[mp3_name]
 
             path_to_answer[mp3_file] = item
@@ -83,9 +106,13 @@ def create_database(name):
     session = Session()
 
     Base.metadata.create_all(engine)
-    data = get_db_dict()
+    data = cached_audios()
     for path, ans in data.items():
-        session.add(Entry(filepath=path, answer=ans))
+        session.add(Audio(filepath=path, sequence=ans))
+
+    fonz = initialize_fonz()
+    for fon in fonz:
+        session.add(Fon(id=fon.id, symbol=fon.ipa))
 
     session.commit()
 
@@ -117,10 +144,5 @@ def query_rows(session):
     audios = session.query(Audio).all()
     return audios
 
-if __name__ == '__main__':
-    with get_database_session('database.db') as session:
-        data = get_db_dict()
-        for path, ans in data.items():
-            session.add(Entry(filepath=path, answer=ans))
-
-        session.commit()
+if __name__ == "__main__":
+    create_database('fresh_database.db')
