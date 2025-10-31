@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import sessionmaker
-from temp_db import *  # replace with your actual models module
+from db_utils import *  # replace with your actual models module
 
 DB_PATH = "sqlite:///database.db"  # adjust path if needed
 
@@ -12,6 +12,8 @@ session = Session()
 # Use inspector to get table info
 inspector = inspect(engine)
 tables = inspector.get_table_names()
+
+tables = ['fon']
 
 print("=== Database Tables ===")
 for table in tables:

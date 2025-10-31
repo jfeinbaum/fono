@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, Response, jsonify, session
 from init_db import create_database, database_exists, query_rows, get_database_session
 from model import initialize_fonz, initialize_edges
-from temp_db import record_guess
+from db_utils import record_guess
 import random
 
 
