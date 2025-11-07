@@ -129,6 +129,18 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
+document.addEventListener('keydown', e => {
+  const newSoundBtn = document.getElementById('newSoundBtn');
+  const playSoundBtn = document.getElementById('playSoundBtn');
+  if (document.activeElement === newSoundBtn) newSoundBtn.blur();
+  if (document.activeElement === playSoundBtn) playSoundBtn.blur();
+});
+
+document.addEventListener('keydown', e => {
+  const btn = document.getElementById('playBtn');
+  if (document.activeElement === btn) btn.blur();
+});
+
 function handleNodeClick(el) {
     const nodeId = el.getAttribute("ipa");
     clickedNodes.push(nodeId);
