@@ -32,11 +32,3 @@ for table in tables:
 
     except Exception as e:
         print(f"Error querying table {table}: {e}")
-
-
-
-'''
-change hamu5 to ham=5
-5-06/5-06-09.mp3
-
-'''
