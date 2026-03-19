@@ -2,7 +2,10 @@ from flask import Flask, render_template, request, Response, jsonify, session
 from init_db import create_database, database_exists, query_rows, get_database_session
 from model import initialize_fonz, initialize_edges
 from db_utils import record_guess
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy import create_engine
 import random
+
 
 
 app = Flask(__name__)
@@ -12,7 +15,10 @@ db_name = 'database.db'
 if not database_exists(db_name):
     create_database(db_name)
 
-db_session = get_database_session(db_name)
+
+engine = create_engine(f'sqlite:///={db_name}')
+SessionFactory = sessionmaker(bind=engine)
+db_session = scoped_session(SessionFactory)
 rows = query_rows(db_session)
 fonz = initialize_fonz()
 edges = initialize_edges()
@@ -61,6 +67,10 @@ def validate():
     record_guess(db_session, id_seq, correct)
 
     return jsonify({'correct': correct})
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
 
 if __name__ == "__main__":
     app.run(debug=False, port=8080)
